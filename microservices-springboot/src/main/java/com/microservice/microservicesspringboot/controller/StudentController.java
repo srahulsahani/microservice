@@ -2,6 +2,7 @@ package com.microservice.microservicesspringboot.controller;
 
 import com.microservice.microservicesspringboot.bean.Student;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -20,10 +21,16 @@ public class StudentController {
     public List<Student> getStudents(){
         List<Student> students = new ArrayList<>();
         students.add(new Student(1,"Ramesh","Fadatare"));
-        students.add(new Student(1,"Umesh","Fadatare"));
-        students.add(new Student(1,"Ram","Jadhav"));
-        students.add(new Student(1,"Sanjay","Pawar"));
+        students.add(new Student(2,"Umesh","Fadatare"));
+        students.add(new Student(3,"Ram","Jadhav"));
+        students.add(new Student(4,"Sanjay","Pawar"));
 
         return students;
+    }
+
+    //Springboot REST API with path variable
+    @GetMapping("/student/{id}")
+    public Student getPathVariable(@PathVariable("id") int id){
+        return new Student(id,"Ramesh","Fadatare");
     }
 }
