@@ -29,8 +29,10 @@ public class StudentController {
     }
 
     //Springboot REST API with path variable
-    @GetMapping("/student/{id}")
-    public Student getPathVariable(@PathVariable("id") int id){
-        return new Student(id,"Ramesh","Fadatare");
+    @GetMapping("/students/{id}/{first-name}/{last-name}")
+    public Student getPathVariable(@PathVariable("id") int id,
+                                   @PathVariable("first-name") String firstName,
+                                   @PathVariable("last-name") String lastName){
+        return new Student(id,firstName,lastName);
     }
 }
