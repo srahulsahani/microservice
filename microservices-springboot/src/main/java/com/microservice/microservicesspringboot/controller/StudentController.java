@@ -3,6 +3,7 @@ package com.microservice.microservicesspringboot.controller;
 import com.microservice.microservicesspringboot.bean.Student;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -33,6 +34,14 @@ public class StudentController {
     public Student getPathVariable(@PathVariable("id") int id,
                                    @PathVariable("first-name") String firstName,
                                    @PathVariable("last-name") String lastName){
+        return new Student(id,firstName,lastName);
+    }
+
+    //Springboot REST API with request param
+    @GetMapping("/students/query")
+    public Student studentRequestVariable(@RequestParam int id,
+                                          @RequestParam String firstName,
+                                          @RequestParam String lastName){
         return new Student(id,firstName,lastName);
     }
 }
