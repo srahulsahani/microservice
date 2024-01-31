@@ -2,6 +2,7 @@ package com.microservice.microservicesspringboot.controller;
 
 import com.microservice.microservicesspringboot.bean.Student;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,36 +12,40 @@ import java.util.List;
 public class StudentController {
 
     @GetMapping("/student")
-    public Student getStudent(){
+    public ResponseEntity<Student> getStudent(){
         Student student = new Student(1,"Ramesh","Fadatare");
-        return student;
+//        return new ResponseEntity<>(student,HttpStatus.OK);
+        return ResponseEntity.ok()
+                .header("custom-header","rahul")
+                .body(student);
     };
 
     @GetMapping("/students")
-    public List<Student> getStudents(){
+    public ResponseEntity<List<Student>> getStudents(){
         List<Student> students = new ArrayList<>();
         students.add(new Student(1,"Ramesh","Fadatare"));
         students.add(new Student(2,"Umesh","Fadatare"));
         students.add(new Student(3,"Ram","Jadhav"));
         students.add(new Student(4,"Sanjay","Pawar"));
-
-        return students;
+        return ResponseEntity.ok(students);
     }
 
     //Springboot REST API with path variable
     @GetMapping("/students/{id}/{first-name}/{last-name}")
-    public Student getPathVariable(@PathVariable("id") int id,
+    public ResponseEntity<Student> getPathVariable(@PathVariable("id") int id,
                                    @PathVariable("first-name") String firstName,
                                    @PathVariable("last-name") String lastName){
-        return new Student(id,firstName,lastName);
+        Student student= new Student(id,firstName,lastName);
+        return ResponseEntity.ok(student);
     }
 
     //Springboot REST API with request param
     @GetMapping("/students/query")
-    public Student studentRequestVariable(@RequestParam int id,
+    public ResponseEntity<Student> studentRequestVariable(@RequestParam int id,
                                           @RequestParam String firstName,
                                           @RequestParam String lastName){
-        return new Student(id,firstName,lastName);
+        Student student = new Student(id,firstName,lastName);
+        return ResponseEntity.ok(student);
     }
 
 
@@ -48,23 +53,23 @@ public class StudentController {
     //@PostMapping and @RequestBody
 
     @PostMapping("/students/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Student createStudent(@RequestBody Student student){
+//    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<Student> createStudent(@RequestBody Student student){
         System.out.println(student.getId());
         System.out.println(student.getFirstName());
         System.out.println(student.getLastName());
-        return student;
+        return new ResponseEntity<>(student,HttpStatus.CREATED);
     }
 
     @PutMapping("students/{id}/update")
-    public Student updateStudent(@RequestBody Student student, @PathVariable("id") int studentId){
+    public ResponseEntity<Student> updateStudent(@RequestBody Student student, @PathVariable("id") int studentId){
         System.out.println(student.getId());
         System.out.println(student.getFirstName());
-        return student;
+        return ResponseEntity.ok(student);
     }
 
     @DeleteMapping("students/{id}/delete")
-    public String deleteStudent(@PathVariable("id") int studentId){
-        return "Student with id "+ studentId+ " deleted successfully";
+    public ResponseEntity<String> deleteStudent(@PathVariable("id") int studentId){
+        return ResponseEntity.ok("Student with id "+ studentId+ " deleted successfully");
     }
 }
