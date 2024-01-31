@@ -62,4 +62,9 @@ public class StudentController {
         System.out.println(student.getFirstName());
         return student;
     }
+
+    @DeleteMapping("students/{id}/delete")
+    public String deleteStudent(@PathVariable("id") int studentId){
+        return "Student with id "+ studentId+ " deleted successfully";
+    }
 }
