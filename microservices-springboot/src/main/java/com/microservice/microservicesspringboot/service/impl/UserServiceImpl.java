@@ -6,6 +6,7 @@ import com.microservice.microservicesspringboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,5 +22,10 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long id) {
         Optional<User> savedUser = userRepository.findById(id);
         return savedUser.get();
+    }
+
+    @Override
+    public List<User> getALlUsers() {
+        return userRepository.findAll();
     }
 }

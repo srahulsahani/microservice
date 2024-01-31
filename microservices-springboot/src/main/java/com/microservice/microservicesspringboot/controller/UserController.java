@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/api/users")
 public class UserController {
@@ -25,6 +27,12 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id){
         User user = userService.getUserById(id);
         return new ResponseEntity<>(user,HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers(){
+        List<User> allusers = userService.getALlUsers();
+        return new ResponseEntity<>(allusers,HttpStatus.OK);
     }
 
 }
