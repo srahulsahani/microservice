@@ -35,4 +35,11 @@ public class UserController {
         return new ResponseEntity<>(allusers,HttpStatus.OK);
     }
 
+    @PutMapping({"id"})
+    public ResponseEntity<User> updatedUser(@PathVariable("id") Long userId,User user){
+        User updatedUser = userService.updateUser(user);
+        user.setId(userId);
+        return new ResponseEntity<>(updatedUser,HttpStatus.OK);
+    }
+
 }
