@@ -2,6 +2,7 @@ package com.microservice.microservicesspringboot.service.impl;
 
 import com.microservice.microservicesspringboot.dto.UserDto;
 import com.microservice.microservicesspringboot.entity.User;
+import com.microservice.microservicesspringboot.mapper.UserMapper;
 import com.microservice.microservicesspringboot.repository.UserRepository;
 import com.microservice.microservicesspringboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,30 +17,21 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Override
     public UserDto createUser(UserDto userDto) {
-        //Convert UserDto into JPA entity
 
-        User user = new User(
-                userDto.getId(),
-                userDto.getFirstName(),
-                userDto.getLastName(),
-                userDto.getEmail()
-        );
+        //Convert UserDto into JPA entity
+        User user = UserMapper.mapToUser(userDto);
         User savedUser = userRepository.save(user);
 
         //Convert User JPA to  UserDto
-        UserDto savedUserDto = new UserDto(
-                savedUser.getId(),
-                savedUser.getFirstName(),
-                savedUser.getLastName(),
-                savedUser.getEmail()
-        );
+        UserDto savedUserDto = UserMapper.mapToUserDto(savedUser);
         return savedUserDto;
     }
 
     @Override
-    public User getUserById(Long id) {
-        Optional<User> savedUser = userRepository.findById(id);
-        return savedUser.get();
+    public UserDto getUserById(Long userId ){
+        Optional<User> optionalUser = userRepository.findById(userId);
+        User savedUser = optionalUser.get();
+        return UserMapper.mapToUserDto(savedUser);
     }
 
     @Override
