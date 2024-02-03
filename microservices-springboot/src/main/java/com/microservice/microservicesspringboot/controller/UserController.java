@@ -1,5 +1,6 @@
 package com.microservice.microservicesspringboot.controller;
 
+import com.microservice.microservicesspringboot.dto.UserDto;
 import com.microservice.microservicesspringboot.entity.User;
 import com.microservice.microservicesspringboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user){
-        User savedUser = userService.createUser(user);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user){
+        UserDto savedUser = userService.createUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
@@ -40,6 +41,12 @@ public class UserController {
         User updatedUser = userService.updateUser(user);
         user.setId(userId);
         return new ResponseEntity<>(updatedUser,HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long userId){
+        userService.deleteUser(userId);
+        return new ResponseEntity<>("User delete Successfully",HttpStatus.OK);
     }
 
 }

@@ -1,15 +1,17 @@
 package com.microservice.microservicesspringboot.service;
 
+import com.microservice.microservicesspringboot.dto.UserDto;
 import com.microservice.microservicesspringboot.entity.User;
 
 import java.util.List;
 
 public interface UserService {
-    User createUser(User user);
+    UserDto createUser(UserDto user);
 
     User getUserById(Long id);
 
     List<User> getALlUsers();
 
     User updateUser(User user);
+    void deleteUser(Long userId);
 }

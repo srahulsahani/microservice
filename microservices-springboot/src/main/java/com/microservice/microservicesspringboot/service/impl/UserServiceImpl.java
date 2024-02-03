@@ -1,5 +1,6 @@
 package com.microservice.microservicesspringboot.service.impl;
 
+import com.microservice.microservicesspringboot.dto.UserDto;
 import com.microservice.microservicesspringboot.entity.User;
 import com.microservice.microservicesspringboot.repository.UserRepository;
 import com.microservice.microservicesspringboot.service.UserService;
@@ -14,8 +15,25 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public UserDto createUser(UserDto userDto) {
+        //Convert UserDto into JPA entity
+
+        User user = new User(
+                userDto.getId(),
+                userDto.getFirstName(),
+                userDto.getLastName(),
+                userDto.getEmail()
+        );
+        User savedUser = userRepository.save(user);
+
+        //Convert User JPA to  UserDto
+        UserDto savedUserDto = new UserDto(
+                savedUser.getId(),
+                savedUser.getFirstName(),
+                savedUser.getLastName(),
+                savedUser.getEmail()
+        );
+        return savedUserDto;
     }
 
     @Override
@@ -38,4 +56,11 @@ public class UserServiceImpl implements UserService {
         User updatedUser = userRepository.save(existingUser);
         return updatedUser;
     }
+
+    @Override
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+
 }
