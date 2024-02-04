@@ -2,6 +2,7 @@ package com.microservice.microservicesspringboot.service.impl;
 
 import com.microservice.microservicesspringboot.dto.UserDto;
 import com.microservice.microservicesspringboot.entity.User;
+import com.microservice.microservicesspringboot.exception.EmailAlreadyExistsException;
 import com.microservice.microservicesspringboot.exception.ResourceNotFoundException;
 import com.microservice.microservicesspringboot.mapper.AutoUserMapper;
 import com.microservice.microservicesspringboot.mapper.UserMapper;
@@ -32,6 +33,10 @@ public class UserServiceImpl implements UserService {
 //        User user = UserMapper.mapToUser(userDto);
 
 //        User user = modelMapper.map(userDto,User.class);
+        Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
+        if(optionalUser.isPresent()){
+            throw new EmailAlreadyExistsException("Email already exist for the User");
+        }
 
         User user = AutoUserMapper.MAPPER.mapToUser(userDto);
 
