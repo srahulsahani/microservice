@@ -13,14 +13,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserDto {
     private  long id;
-    //User first name shouldn't be empty
-    @NotEmpty
+    @NotEmpty(message = "User first name shouldn't be empty")
     private String firstName;
     //User last name shouldn't be empty
-    @NotEmpty
+    @NotEmpty(message = "User last name shouldn't be empty")
     private String lastName;
-    //User email shouldn't be empty, it should be valid
-    @NotEmpty
-    @Email
+    @NotEmpty(message = "User email shouldn't be empty")
+    @Email(message = "Email address should be valid")
     private String email;
 }
