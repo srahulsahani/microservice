@@ -17,7 +17,7 @@ public class UserMapper {
     }
 
     //Convert UserDto into JPA enity
-    public  static User mapToUser(UserDto userDto){
+    public  static User mapToUser(UserDto userDto) {
         User user = new User(
                 userDto.getId(),
                 userDto.getFirstName(),
@@ -25,4 +25,5 @@ public class UserMapper {
                 userDto.getEmail()
         );
         return user;
+    }
 }
