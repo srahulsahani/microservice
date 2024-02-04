@@ -5,12 +5,12 @@ import com.microservice.microservicesspringboot.entity.User;
 import com.microservice.microservicesspringboot.exception.ErrorDetails;
 import com.microservice.microservicesspringboot.exception.ResourceNotFoundException;
 import com.microservice.microservicesspringboot.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +23,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user){
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto user){
         UserDto savedUser = userService.createUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
@@ -41,7 +41,8 @@ public class UserController {
     }
 
     @PutMapping({"id"})
-    public ResponseEntity<UserDto> updatedUser(@PathVariable("id") Long userId,UserDto user){
+    public ResponseEntity<UserDto> updatedUser(@PathVariable("id") Long userId,
+                                               @Valid UserDto user){
         UserDto updatedUser = userService.updateUser(user);
         user.setId(userId);
         return new ResponseEntity<>(updatedUser,HttpStatus.OK);
@@ -52,6 +53,5 @@ public class UserController {
         userService.deleteUser(userId);
         return new ResponseEntity<>("User delete Successfully",HttpStatus.OK);
     }
-
 
 }
