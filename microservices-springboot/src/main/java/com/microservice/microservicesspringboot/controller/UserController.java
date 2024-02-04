@@ -31,14 +31,14 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers(){
-        List<User> allusers = userService.getALlUsers();
+    public ResponseEntity<List<UserDto>> getAllUsers(){
+        List<UserDto> allusers = userService.getALlUsers();
         return new ResponseEntity<>(allusers,HttpStatus.OK);
     }
 
     @PutMapping({"id"})
-    public ResponseEntity<User> updatedUser(@PathVariable("id") Long userId,User user){
-        User updatedUser = userService.updateUser(user);
+    public ResponseEntity<UserDto> updatedUser(@PathVariable("id") Long userId,UserDto user){
+        UserDto updatedUser = userService.updateUser(user);
         user.setId(userId);
         return new ResponseEntity<>(updatedUser,HttpStatus.OK);
     }
