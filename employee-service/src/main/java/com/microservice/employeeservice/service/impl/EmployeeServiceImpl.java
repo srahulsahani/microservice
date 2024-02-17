@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -18,6 +20,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto saveEmployee(EmployeeDto employeeDto) {
         Employee employee = modelMapper.map(employeeDto,Employee.class);
         Employee savedEmployee = employeeRepository.save(employee);
+        EmployeeDto savedEmployeeDto = modelMapper.map(savedEmployee,EmployeeDto.class);
+        return savedEmployeeDto;
+    }
+
+    @Override
+    public EmployeeDto getEmployeeById(Long id) {
+        Optional<Employee> savedEmployee = employeeRepository.findById(id);
         EmployeeDto savedEmployeeDto = modelMapper.map(savedEmployee,EmployeeDto.class);
         return savedEmployeeDto;
     }
