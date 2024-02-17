@@ -4,35 +4,25 @@ import com.microservices.departmentservice.dto.DepartmentDto;
 import com.microservices.departmentservice.entity.Department;
 import com.microservices.departmentservice.repository.DepartmentRepository;
 import com.microservices.departmentservice.service.DepartmentService;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class DepartmentServiceImpl implements DepartmentService {
 
     private DepartmentRepository departmentRepository;
-
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
-        this.departmentRepository = departmentRepository;
-    }
+    private ModelMapper modelMapper;
 
     @Override
     public DepartmentDto saveDepartment(DepartmentDto departmentDto) {
 
-        Department department = new Department(
-                departmentDto.getId(),
-                departmentDto.getDepartmentName(),
-                departmentDto.getDepartmentDescription(),
-                departmentDto.getDepartmentCode()
-        );
+        Department department = modelMapper.map(departmentDto,Department.class);
 
         Department savedDepartment = departmentRepository.save(department);
 
-        DepartmentDto savedDepartmentDto = new DepartmentDto(
-                savedDepartment.getId(),
-                savedDepartment.getDepartmentName(),
-                savedDepartment.getDepartmentDescription(),
-                savedDepartment.getDepartmentCode()
-        );
+        DepartmentDto savedDepartmentDto = modelMapper.map(savedDepartment,DepartmentDto.class);
         return savedDepartmentDto;
     }
 }
