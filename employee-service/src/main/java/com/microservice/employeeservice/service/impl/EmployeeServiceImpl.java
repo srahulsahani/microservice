@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Optional;
 
@@ -19,8 +20,7 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
     private ModelMapper modelMapper;
-    private RestTemplate restTemplate;
-
+    private WebClient webClient;
     @Override
     public EmployeeDto saveEmployee(EmployeeDto employeeDto) {
         Employee employee = modelMapper.map(employeeDto,Employee.class);
@@ -35,10 +35,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         Optional<Employee> savedEmployee = employeeRepository.findById(id);
         EmployeeDto savedEmployeeDto = modelMapper.map(savedEmployee,EmployeeDto.class);
 
-        /*Get Department Data*/
-        ResponseEntity<DepartmentDto> departmentDtoResponseEntity =
-                restTemplate.getForEntity("http://localhost:8080/api/departments/"+savedEmployee.get().getDepartmentCode(), DepartmentDto.class);
-        DepartmentDto saveddepartmentDto = departmentDtoResponseEntity.getBody();
+        /*Get Department Data using webClient call*/
+        DepartmentDto saveddepartmentDto = webClient.get()
+                .uri("http://localhost:8080/api/departments/"+savedEmployee.get().getDepartmentCode())
+                .retrieve()
+                .bodyToMono(DepartmentDto.class)
+                .block();
 
         //Combining two Responses
         APIResponseDto apiResponseDto = new APIResponseDto();
